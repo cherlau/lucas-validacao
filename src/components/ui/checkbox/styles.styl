@@ -1,0 +1,157 @@
+@import '../../../assets/styles/bases/ui-input.styl'
+
+.fac-checkbox.success
+	input:checked
+		background success-2
+		color #FFF
+		border 1px success-2 solid
+
+.fac-checkbox.disabled
+	input:checked
+		background #b4d1c0
+		color #FFF
+		border 1px #b4d1c0 solid
+
+.fac-checkbox
+	display inline-flex
+	align-items center
+
+	.label
+		font-size 11px
+		font-weight 400
+		cursor pointer
+
+	input
+		appearance none
+		-webkit-appearance none
+		-moz-appearance none
+		width 20px
+		height 20px
+		border-radius 3px
+		position relative
+		cursor pointer
+		display flex
+		align-items center
+		justify-content center
+		border 1px grey-light-0 solid
+		transitionDefault()
+		color facilita-4
+		background #f9f9fc
+		outline none
+
+	input:after
+		content '\f00c'
+		position absolute
+		line-height 0
+		font-size 12px
+		font-family 'Font Awesome 5 Pro'
+		opacity 0.3
+		display flex
+		align-items center
+		-moz-osx-font-smoothing grayscale
+		-webkit-font-smoothing antialiased
+
+	input:checked:after
+		opacity 1
+		font-size 12px
+		opacity 1
+
+	input:checked
+		background primary-3
+		color #FFF
+		border 1px primary-3 solid
+
+.fac-checkbox.xs
+	input
+		width 20px
+		height 20px
+
+	input:after
+		font-size 10px
+		line-height 0
+
+	input:checked:after
+		font-size 10px
+
+	.label
+		font-size 12px
+
+.fac-checkbox.sm
+	input
+		width 20px
+		height 20px
+
+	input:after
+		font-size 12px
+		line-height 0
+
+	input:checked:after
+		font-size 12px
+
+	.label
+		line-height 25px
+
+.fac-checkbox.md
+	input
+		width 30px
+		height 30px
+
+	input:after
+		font-size 12px
+		line-height 0
+
+	input:checked:after
+		font-size 12px
+
+	.label
+		line-height 30px
+
+.fac-checkbox.lg
+	input
+		width 35px
+		height 35px
+
+	input:after
+		font-size 15px
+		line-height 0
+
+	input:checked:after
+		font-size 15px
+
+	.label
+		line-height 35px
+
+.fac-checkbox.xl
+	input
+		width 40px
+		height 40px
+
+	input:after
+		font-size 17px
+		line-height 0
+
+	input:checked:after
+		font-size 17px
+
+	.label
+		line-height 40px
+
+.fac-checkbox.circle
+	input
+		border-radius 50%
+
+.fac-checkbox.inverted
+	input
+		background #FFF
+
+	input:checked
+		background #FFF
+		color primary-3
+		border 1px grey-light-0 solid
+
+.mgb-0
+	margin-bottom 0
+
+.mgr-0
+	input
+		margin-right 0

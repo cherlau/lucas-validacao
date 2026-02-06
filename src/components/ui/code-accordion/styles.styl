@@ -1,0 +1,53 @@
+.accordion
+	border 1px solid #dfe6f0
+	border-radius 8px
+	overflow hidden
+
+.accordion-header
+	width 100%
+	padding 10px 14px
+	background white
+	border-bottom 1px solid #DFE6F0
+	border none
+	outline none
+	font-weight 500
+	font-size 13px
+	display flex
+	justify-content space-between
+	align-items center
+	cursor pointer
+	color #374151
+
+.chevron
+	color #5e5cf0
+	transition transform 0.3s
+
+.chevron.open
+	transform rotate(180deg)
+
+.accordion-content
+	background #fbfdff /* gray-50 */
+	border-top 1px solid #e0e7ff /* indigo-100 */
+	padding 10px
+	position relative
+	font-family monospace
+
+.accordion-content pre
+	margin 0
+	font-size 13px
+	color #111827 /* gray-900 */
+	white-space pre-wrap
+
+.copy-btn
+	position absolute
+	bottom 8px
+	right 8px
+	padding 4px 10px
+	border-radius 4px
+	border none
+	background transparent
+	cursor pointer
+	transition background 0.2s
+
+.copy-btn:hover
+	background #e5e7eb /* gray-200 */

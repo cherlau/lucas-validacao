@@ -1,0 +1,56 @@
+.sub-item
+	margin-bottom 10px
+	padding-bottom 22px
+
+.sub-item.expanded
+	border-bottom 1px solid #e0e0e0
+
+.sub-item.expanded:last-child
+	border-bottom none
+
+.sub-item-header
+	display flex
+	align-items center
+	border-radius 6px
+	cursor pointer
+	transition all 0.3s ease
+	color #738cac
+	font-size 13px
+	font-weight 500
+
+.fa-chevron-down
+	color #2d334c
+
+.active
+	color #5e5cf0
+
+.sub-item-header i:first-child
+	margin-right 10px
+	width 20px
+
+.sub-item-header span
+	flex 1
+
+.sub-item-header i.fa-chevron-down
+	transition transform 0.3s ease
+	font-size 12px
+
+.sub-item-header i.fa-chevron-down.rotated
+	transform rotate(180deg)
+
+.sub-item-children
+	margin 13px 0 0 0
+
+.sub-item-child
+	display block
+	padding 6px 0px
+	color #738cac
+	text-decoration none
+	border-radius 4px
+	transition all 0.3s ease
+	font-weight 400
+	font-size 12px
+
+.sub-item-child:hover, .sub-item-child.active-child
+	color #5e5cf0
+	text-decoration none

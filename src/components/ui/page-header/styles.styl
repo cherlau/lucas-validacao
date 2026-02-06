@@ -1,0 +1,66 @@
+.page-header
+	display flex
+	align-items center
+	justify-content space-between
+	border-bottom 1px solid #e5e7eb
+
+.page-header__info
+	padding 20px 0
+
+/* Título e descrição */
+.page-header__title
+	font-size 18px
+	font-weight 600
+	color #1e2339
+	margin 0
+
+.page-header__highlight
+	color #4f46e5 /* indigo-600 */
+	font-weight 600
+
+.page-header__description
+	font-size 12px
+	color #49506e
+
+/* Tabs */
+.page-header__tabs
+	display flex
+	gap 1.5rem
+
+.page-header__tab
+	font-size 12px
+	font-weight 400
+	padding-top 20px
+	padding-bottom 19px
+	border none
+	border-bottom 2px solid transparent
+	background none
+	cursor pointer
+	color #738cac /* gray-500 */
+	transition color 0.2s ease, border-color 0.2s ease
+	display flex
+	align-items center
+	gap 10px /* espaço entre ícone e label */
+
+.page-header__tab-label
+	margin-top 1px
+
+/* Ícones dentro das tabs pegam a cor do texto */
+.page-header__tab i
+	color #89a1bf
+	transition color 0.2s ease
+	font-size 15px
+
+/* Hover e ativo */
+.page-header__tab:hover
+	color #2d334c
+	border-color #5e5cf0 /* efeito visual sem mexer nos vizinhos */
+	font-weight 600
+
+/* Botão hover só muda a cor do ícone e do texto */
+.page-header__tab:hover i
+	color #5e5cf0 /* ícone muda de cor no hover */
+
+/* Botão ativo */
+.page-header__tab.is-active i
+	color #5e5cf0 /* ícone muda de cor quando ativo */

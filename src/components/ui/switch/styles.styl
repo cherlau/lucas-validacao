@@ -1,0 +1,202 @@
+@import '../../../assets/styles/bases/ui-input.styl'
+
+.fac-switch
+	display inline-flex
+	align-items center
+	cursor pointer
+
+	label
+		margin-bottom 0
+
+	.wrapper
+		box-sizing content-box
+		height 24px
+
+	.label
+		padding-left 10px
+		padding-right 10px
+		line-height 0
+		white-space nowrap
+		font-size 12px
+		margin 0
+
+	input
+		display none
+		margin-botton 0
+
+	.switch
+		display inline-flex
+		align-items center
+		box-sizing content-box
+		padding 0 5px
+		height 24px
+		width 36px
+		position relative
+		margin-bottom 0
+		border-radius 30px
+		background grey-medium-4
+		position relative
+		transitionTime(0.2s)
+
+		span
+			flex 1
+			color grey-medium-0
+			font-size 8px
+			font-weight 500
+			display inline-block
+
+		span:first-child
+			padding-left 2px
+
+		span:last-child
+			text-align right
+			padding-right 2px
+
+	.switch:after
+		content ''
+		width 18px
+		height 18px
+		background #ffffff
+		border-radius 50%
+		transitionTime(0.2s)
+		left 4px
+		position absolute
+		box-shadow 0px 5px 10px 0px rgba(50, 50, 80, 0.2)
+
+	input:checked + .switch
+		background #5e5cf0
+
+		span
+			color #FFF
+
+	input:checked + .switch:after
+		left 24px
+
+	.disabled
+		cursor not-allowed
+		background grey-light-2
+
+.fac-switch.primary
+	input:checked + .switch
+		background primary-2
+
+.fac-switch.success
+	input:checked + .switch
+		background success-2
+
+input:checked + .switch.disabled
+	background #C5E4C5
+
+	span
+		color #FFF
+
+.fac-switch.danger
+	input:checked + .switch
+		background danger-2
+
+.fac-switch.warning
+	input:checked + .switch
+		background warning-2
+
+.fac-switch.highlight
+	input:checked + .switch
+		background highlight-2
+
+.fac-switch.xxs
+	> div:first-child
+		height 15px
+
+	.switch
+		height 15px
+		width 28px
+
+	.switch:after
+		width 11px
+		height 11px
+		left 3px
+
+	input:checked + .switch:after
+		left 14px
+
+.fac-switch.xs
+	> div:first-child
+		height 20px
+
+	.switch
+		height 20px
+		width 36px
+
+	.switch:after
+		width 14px
+		height 14px
+		left 4px
+
+	input:checked + .switch:after
+		left 18px
+
+.fac-switch.sm
+	> div:first-child
+		height 24px
+
+	.switch
+		height 24px
+		width 46px
+
+	.switch:after
+		width 18px
+		height 18px
+		left 4px
+
+	input:checked + .switch:after
+		left 24px
+
+.fac-switch.md
+	> div:first-child
+		height 28px
+
+	.switch
+		height 28px
+		width 50px
+
+	.switch:after
+		width 20px
+		height 20px
+		left 4px
+
+	input:checked + .switch:after
+		left 25px
+
+.fac-switch.lg
+	> div:first-child
+		height 32px
+
+	.switch
+		height 32px
+		width 54px
+
+	.switch:after
+		width 24px
+		height 24px
+		left 4px
+
+	input:checked + .switch:after
+		left 26px
+
+.fac-switch.xl
+	> div:first-child
+		height 36px
+
+	.switch
+		height 36px
+		width 60px
+
+	.switch:after
+		width 26px
+		height 26px
+		left 4px
+
+	input:checked + .switch:after
+		left 29px
+
+.mgb-0
+	margin-bottom 0

@@ -1,0 +1,36 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --ext .js,.vue",
+    "lint:fix": "eslint . --ext .js,.vue --fix"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.2",
+    "facilita-ds": "^0.1.5",
+    "maska": "^3.2.0",
+    "nuxt": "^3.19.2",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.21",
+    "vue-3-mask": "^0.0.1-alpha",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@eslint/create-config": "^1.10.0",
+    "@nuxt/eslint": "^1.9.0",
+
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.5.0",
+    "prettier": "^3.6.2",
+    "stylus": "^0.64.0",
+    "stylus-loader": "^8.1.2",
+    "vue-eslint-parser": "^10.2.0"
+  }
+}

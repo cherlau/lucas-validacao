@@ -1,0 +1,103 @@
+@import '../globals/functions.styl'
+
+.ui-input
+	display block
+	width 100%
+	position relative
+
+.label
+	font-size 12px
+	line-height 12px
+	font-weight 500
+	margin-bottom 6px
+	display flex
+	color text-primary
+
+// It is an '*' that represents that the field is required
+.label-required
+	color danger-4
+	font inherit
+	display inline !important
+
+.input
+	border 1px solid grey-light-0
+	padding 0 15px
+	font-size 13px
+	color text-primary
+	border-radius 4px
+	transition()
+
+	&::placeholder, &::-webkit-input-placeholder
+		opacity 0.75
+		color text-muted
+		transition()
+
+	&:focus
+		border 1px primary-2 solid
+
+		&::placeholder, &::-webkit-input-placeholder
+			opacity 0.5
+			transition-delay 0.5s
+
+	&.pb-2
+		padding-bottom 2px
+
+	&.b-off
+		border unset !important
+
+	&.br-off
+		border-radius 0 !important
+
+	&.brl-off
+		border-radius 0 3px 3px 0 !important
+
+	&.brr-off
+		border-radius 3px 0 0 3px !important
+
+	&.brb-off
+		border-radius 3px 3px 0 0 !important
+
+&.error
+	.input
+		border 1px danger-4 solid
+
+	.error-message
+		margin-top 0.25rem
+		font-size 0.8rem
+		color danger-4
+
+&.success
+	.input
+		border 1px success-2 solid
+
+&.mb-0
+	margin-bottom 0
+
+// Tamanhos - alturas do input
+&.xs
+	.input
+		height field_xs
+
+&.sm
+	.input
+		height field_sm
+
+&.md
+	.input
+		height field_md
+
+&.lg
+	.input
+		height field_lg
+
+&.xl
+	.input
+		height field_xl
+
+&.xxl
+	.input
+		height field_xxl
+
+&.xxxl
+	.input
+		height field_xxxl

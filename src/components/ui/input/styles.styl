@@ -1,0 +1,22 @@
+@import '../../../assets/styles/bases/ui-input.styl'
+
+.input-wrapper
+	position relative // Essencial para posicionar o ícone
+
+.search-icon
+	position absolute
+	left 12px // Distância da esquerda
+	top 50%
+	transform translateY(-50%) // Alinhamento vertical perfeito
+	display flex
+	align-items center
+	justify-content center
+	color text-muted // Cor do ícone
+	pointer-events none // Para o clique ir para o input
+
+&.searchable
+	.input
+		padding-left 36px
+
+.full-width
+	width 100%

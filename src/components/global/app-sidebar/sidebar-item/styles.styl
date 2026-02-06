@@ -1,0 +1,42 @@
+.sidebar-item
+	position relative
+	height 40px
+	width 40px
+	display flex
+	align-items center
+	justify-content center
+	margin 5px
+	cursor pointer
+	border-radius 8px
+	transition all 0.3s ease
+	color #696d81
+	background #292f49
+
+.sidebar-item:hover
+	background-color #4a5568
+	color white
+
+.sidebar-item.active
+	background-color #5e5cf0
+	color white
+
+.sidebar-item i
+	font-size 20px
+
+.tooltip
+	position absolute
+	left 65px
+	background-color #1a202c
+	color white
+	padding 5px 10px
+	border-radius 4px
+	font-size 12px
+	white-space nowrap
+	opacity 0
+	visibility hidden
+	transition all 0.3s ease
+	z-index 1001
+
+.sidebar-item:hover .tooltip
+	opacity 1
+	visibility visible

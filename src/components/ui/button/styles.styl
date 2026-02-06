@@ -1,0 +1,97 @@
+.ui-button
+	padding 0 10px
+	border-radius 3px
+	cursor pointer
+	outline none
+	white-space nowrap
+	font-weight 400
+	color facilita-0
+
+	> .fa, > .fal, > .far
+		font-size 125%
+		vertical-align middle
+
+		&::before
+			display inline-block
+
+	// 
+	// Modificadores
+	// 
+	&.xs
+		height field_xs
+		font-size 12px
+
+	&.sm
+		height field_sm
+		font-size 12px
+		padding 0 12px
+
+	&.smd
+		font-size 12px
+		padding 5px 16px
+
+	&.md, &.md2
+		height field_md
+		font-size 13px
+		padding 0 16px
+
+	&.lg, &.md3
+		height field_lg
+		font-size 13px
+		padding 0 18px
+
+	&.xl
+		height field_xl
+		font-size 14px
+		padding 0 20px
+
+	&.xxl
+		height field_xxl
+		font-size 14px
+		padding 0 22px
+
+	&.xxxl
+		height field_xxxl
+		font-size 16px
+		font-weight 600
+		padding 0 24px
+
+	&.wsm
+		height field_sm
+		font-size 12px
+		padding 0 30px
+
+	&.full-width
+		width 100%
+
+	// 
+	// Cores
+	// 
+	&.primary
+		color white
+		background-color #5E5CF0
+		border 1px solid #5E5CF0
+		border-bottom 2px solid darken(#5E5CF0, 20%)
+
+		&:hover, &.active
+			background-color lighten(#5E5CF0, 8%)
+
+		&:active
+			background-color darken(#5E5CF0, 5%)
+
+	&.transparent
+		color #5E5CF0
+		background-color transparent
+		border 1px solid #DFE6F0
+		border-radius 6px
+		transition all 0.2s ease
+
+		&:hover, &.active
+			background-color rgba(#5E5CF0, 0.04) // hover bem suave
+			border-color #CBD5E1 // cinza intermediário
+			color #4C4AE6 // tom levemente mais escuro no hover
+
+		&:active
+			background-color rgba(#5E5CF0, 0.08) // clique com pouco mais de destaque
+			border-color #5E5CF0
+			color #3735d0
