@@ -1,5 +1,3 @@
-# Só rodar 'npm install' e depois o 'npm run dev'
-
 ## Setup
 
 Make sure to install dependencies:
