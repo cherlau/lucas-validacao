@@ -1,13 +1,14 @@
 <template>
   <div class="sidebar-item" :class="{ active: isActive }" @click="emit('click')">
-    <component :is="iconComponent" />
+    <component :is="iconComponent" v-if="iconComponent" class="icon" />
+
     <span class="tooltip">{{ item.name }}</span>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import * as FacilitaIcons from 'facilita-ds/icons'
+import { FacilitaIcons } from '@/components/icon'
 
 const props = defineProps({
   item: {
@@ -23,7 +24,7 @@ const props = defineProps({
 const emit = defineEmits(['click'])
 
 const iconComponent = computed(() => {
-  return FacilitaIcons[props.item.icon] || null
+  return FacilitaIcons[props.item.icon] ?? null
 })
 </script>
 

@@ -2,7 +2,7 @@ export const sidebarConfig = [
   {
     id: 'integrations',
     name: 'Integrações',
-    icon: 'uiIconGraphic',
+    icon: 'graphic',
     subItems: [
       {
         id: 'erp',
@@ -29,7 +29,7 @@ export const sidebarConfig = [
   {
     id: 'subscriptions',
     name: 'Assinaturas',
-    icon: 'uiIconCalculator',
+    icon: 'calculator',
     subItems: [
       {
         id: 'plans',
@@ -52,7 +52,7 @@ export const sidebarConfig = [
   {
     id: 'reports',
     name: 'Relatórios',
-    icon: 'uiIconSquareUser',
+    icon: 'square-user',
     subItems: [
       {
         id: 'sales',
@@ -67,7 +67,7 @@ export const sidebarConfig = [
   {
     id: 'settings',
     name: 'Configurações',
-    icon: 'uiIconBusiness',
+    icon: 'business',
     subItems: [
       {
         id: 'general',
@@ -82,7 +82,7 @@ export const sidebarConfig = [
   {
     id: 'users',
     name: 'Usuários',
-    icon: 'uiIconBrush',
+    icon: 'pencil',
     subItems: [
       {
         id: 'management',
@@ -97,7 +97,7 @@ export const sidebarConfig = [
   {
     id: 'help',
     name: 'Ajuda',
-    icon: 'uiIconUsers',
+    icon: 'square-users',
     subItems: [
       {
         id: 'support',

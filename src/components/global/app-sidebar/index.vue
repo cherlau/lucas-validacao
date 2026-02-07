@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <uiIconFacilita class="icon" />
+    <IconFacilita class="icon" />
     <SidebarItem
       v-for="item in navStore.sidebarItems"
       :key="item.id"
@@ -13,7 +13,6 @@
 
 <script setup>
 import SidebarItem from '@/components/global/app-sidebar/sidebar-item'
-import { uiIconFacilita } from 'facilita-ds/icons'
 import { useNavigationStore } from '@/stores/navigation'
 
 const navStore = useNavigationStore()

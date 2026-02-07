@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   modules: ['@pinia/nuxt'],
-  css: ['facilita-ds/facilita-ds.css', '@/assets/styles/index.styl', '@/assets/styles/root.css'],
+  css: ['@/assets/styles/index.styl', '@/assets/styles/root.css'],
 
   // Bloco adicionado para scripts e metadados globais ✨
   app: {

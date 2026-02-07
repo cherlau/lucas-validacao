@@ -1,26 +1,25 @@
 <template>
   <header class="header">
     <div class="header-icon">
-      <component :is="headerIcon" v-if="false" width="21" height="21" />
-      <IconWindow width="21" height="21" />
+      <component :is="headerIcon" v-if="headerIcon" fill="#5e5cf0" width="21" height="21" />
     </div>
+
     <div class="header-content">
       <div class="header-title">
-        <span v-if="navStore.currentPageTitle">{{ navStore.currentPageTitle }}</span>
-        <span v-if="navStore.currentPageCategory">{{ navStore.currentPageCategory }}</span>
+        <span v-if="navStore.currentPageTitle">
+          {{ navStore.currentPageTitle }}
+        </span>
+        <span v-if="navStore.currentPageCategory">
+          {{ navStore.currentPageCategory }}
+        </span>
       </div>
+
       <div class="header-actions">
         <div class="header-search">
-          <UiInput
-            background-color="#F8FBFF"
-            :search="true"
-            placeholder="Busca rápida"
-            size="sm"
-            mask="###-###"
-          />
+          <UiInput background-color="#F8FBFF" :search="true" placeholder="Busca rápida" size="sm" />
         </div>
+
         <div class="header-user">
-          <!-- <UserProfile /> -->
           <AppUserProfile />
         </div>
       </div>
@@ -30,16 +29,19 @@
 
 <script setup>
 import { computed } from 'vue'
-import * as FacilitaIcons from 'facilita-ds/icons'
 import { useNavigationStore } from '@/stores/navigation'
+import { FacilitaIcons } from '@/components/icon'
 
-const emit = defineEmits(['search'])
 const navStore = useNavigationStore()
 
-// Resolve o ícone dinamicamente
 const headerIcon = computed(() => {
-  if (!navStore.currentPageIcon) return null
-  return FacilitaIcons[navStore.currentPageIcon] || null
+  const iconName = navStore.currentPageIcon
+
+  if (!iconName) {
+    return FacilitaIcons.window
+  }
+
+  return FacilitaIcons[iconName] ?? FacilitaIcons.window
 })
 </script>
 

@@ -7,7 +7,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const authStore = useAuthStore()
 
   // inicializa o state da store com dados do localStorage
-  console.log('testeeee')
   if (!authStore.accessToken) {
     console.log('Inicializando authStore com dados do localStorage...')
     authStore.init()
