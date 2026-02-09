@@ -1,8 +1,12 @@
 <template>
   <UiDrawer
     :model-value="modelValue"
-    title="Criar Token de API"
-    subtitle="Conceda apenas as permissões necessárias e armazene o token em local seguro."
+    :title="isEditing ? 'Editar Token' : 'Criar Token de API'"
+    :subtitle="
+      isEditing
+        ? 'Edite as permissões do token existente.'
+        : 'Conceda apenas as permissões necessárias e armazene o token em local seguro.'
+    "
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <div class="drawer-form-content">
@@ -83,26 +87,38 @@
     <template #footer>
       <div class="drawer-footer-actions">
         <button class="btn-ghost" @click="$emit('update:modelValue', false)">Cancelar</button>
-        <button class="btn-primary" @click="submit">Gerar Token</button>
+        <button class="btn-primary" @click="submit">
+          {{ isEditing ? 'Salvar Alterações' : 'Gerar Token' }}
+        </button>
       </div>
     </template>
   </UiDrawer>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue' // Adicionado computed e watch
 import UiDrawer from '@/components/ui/drawer'
 import UiInput from '@/components/ui/input'
 // Importe seu UiSelect aqui se necessário
 
+// --- PROPS E EMITS ATUALIZADOS ---
 const props = defineProps({
   modelValue: Boolean,
+  tokenToEdit: {
+    // Recebe o objeto para edição
+    type: Object,
+    default: null,
+  },
 })
 const emit = defineEmits(['update:modelValue', 'confirm'])
 
+// --- COMPUTED PARA SABER O MODO ---
+const isEditing = computed(() => !!props.tokenToEdit)
+
 const expandedGroup = ref('unidades')
 
-const form = reactive({
+// --- ESTADO PADRÃO (Para resetar o form) ---
+const defaultFormState = {
   name: 'Facilita CRM',
   expires: 'never',
   ipRestriction: '',
@@ -113,7 +129,10 @@ const form = reactive({
     comissoes: { all: false },
     posvenda: { all: false },
   },
-})
+}
+
+// Criamos o form como uma cópia do estado padrão
+const form = reactive(JSON.parse(JSON.stringify(defaultFormState)))
 
 const expiryOptions = [
   { label: 'Nunca Expira', value: 'never' },
@@ -141,12 +160,49 @@ const toggleGroup = (id) => {
   expandedGroup.value = expandedGroup.value === id ? null : id
 }
 
+// --- LÓGICA DE CARREGAR DADOS ---
+const populateForm = (data) => {
+  // Aqui mapeamos os dados que vêm da tabela para o formulário
+  form.name = data.name || ''
+
+  // Exemplo de mapeamento de IP (supondo que venha da tabela)
+  if (data.restriction === 'global') {
+    form.ipRestriction = ''
+  } else {
+    form.ipRestriction = data.allowed_ips || ''
+  }
+
+  // NOTA: Mapear as permissões complexas depende de como o backend retorna esse objeto no 'item'.
+  // Se o 'item' tiver um objeto 'permissions_full', você faria:
+  // if (data.permissions_full) Object.assign(form.permissions, data.permissions_full)
+}
+
+const resetForm = () => {
+  // Restaura o objeto form para o estado original
+  Object.assign(form, JSON.parse(JSON.stringify(defaultFormState)))
+}
+
+// Observa a abertura do Drawer
+watch(
+  () => props.modelValue,
+  (isOpen) => {
+    if (isOpen) {
+      if (props.tokenToEdit) {
+        populateForm(props.tokenToEdit)
+      } else {
+        resetForm()
+      }
+    }
+  }
+)
+
 const submit = () => {
-  emit('confirm', { ...form })
+  emit('confirm', { ...form, id: props.tokenToEdit?.id, isUpdate: isEditing.value })
 }
 </script>
 
 <style lang="stylus" scoped>
+/* SEUS ESTILOS MANTIDOS INTACTOS ABAIXO */
 /* --- Layout Geral do Drawer --- */
 .drawer-form-content
   padding: 24px 0
@@ -180,10 +236,6 @@ const submit = () => {
   border-top: 1px solid #e2e8f0
   margin: 15px 0
   width: 100%
-
-/* REMOVIDO: .form-group, .ui-input, .ui-textarea
-   Pois agora o UiInput cuida disso
-*/
 
 /* --- Lista de Permissões --- */
 .permissions-list
@@ -224,7 +276,7 @@ const submit = () => {
       flex-direction: column
       gap: 20px
 
-/* --- Checkbox Customizado (Mantido para preservar o visual da lista) --- */
+/* --- Checkbox Customizado --- */
 .checkbox-container
   display: flex
   align-items: center

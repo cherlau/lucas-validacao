@@ -10,7 +10,7 @@
           <p class="subtitle">Encontramos {{ filteredTokens.length }} tokens cadastrados</p>
         </div>
       </div>
-      <button class="btn-primary" @click="isDrawerOpen = true">
+      <button class="btn-primary" @click="handleOpenCreate">
         <i class="fas fa-plus"></i> Criar Token
       </button>
     </div>
@@ -87,7 +87,11 @@
       </template>
     </DataTable>
 
-    <DrawerCreateToken v-model="isDrawerOpen" @confirm="handleSaveToken" />
+    <DrawerCreateToken
+      v-model="isDrawerOpen"
+      :token-to-edit="tokenToEdit"
+      @confirm="handleSaveToken"
+    />
 
     <ModalTokenSuccess v-model="isSuccessModalOpen" :token="generatedToken" />
   </div>
@@ -100,19 +104,28 @@ import DrawerCreateToken from '@/components/features/integration-erp/drawers/cre
 import ModalTokenSuccess from '@/components/features/integration-erp/modals/modal-token-success'
 import UiDropdown from '@/components/ui/dropdown/dropdown-container'
 import UiDropdownItem from '@/components/ui/dropdown/dropdown-item'
-
-// Nota: Certifique-se de que UiDropdown e UiDropdownItem estão importados ou são globais
-// import { UiDropdown, UiDropdownItem } from '@/components/ui/dropdown'
+// Certifique-se de importar o UiSelect se não for global
+import UiSelect from '@/components/ui/select'
 
 const isDrawerOpen = ref(false)
 const isSuccessModalOpen = ref(false)
 const generatedToken = ref('')
 
+// NOVA REF: Controla qual token está sendo editado
+const tokenToEdit = ref(null)
+
+// NOVA FUNÇÃO: Abre o drawer em modo de criação (limpo)
+const handleOpenCreate = () => {
+  tokenToEdit.value = null
+  isDrawerOpen.value = true
+}
+
 // Função para lidar com as ações do Dropdown
 const handleAction = (action, item) => {
   if (action === 'edit') {
-    console.log('Editar item:', item)
-    // Lógica para abrir modal de edição
+    // ALTERADO: Define o token atual e abre o drawer
+    tokenToEdit.value = item
+    isDrawerOpen.value = true
   } else if (action === 'revoke') {
     console.log('Revogar item:', item)
     // Lógica para revogar/excluir
@@ -120,7 +133,8 @@ const handleAction = (action, item) => {
 }
 
 const handleSaveToken = async (formData) => {
-  console.log('Criando token...', formData)
+  console.log('Salvando token...', formData)
+  // Aqui você verificaria formData.isUpdate para saber se é PUT ou POST
   const apiResponse = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.exemplo-de-token-gerado-pela-api-xyz'
   isDrawerOpen.value = false
   generatedToken.value = apiResponse
@@ -162,6 +176,7 @@ const tokenColumns = [
 
 const tokensData = ref([
   {
+    id: 1,
     name: 'Facilita CRM',
     permissions: 'Criar propostas, Editar Propostas, Excluir Pro...',
     status: 'Ativo',
@@ -172,11 +187,12 @@ const tokensData = ref([
     avatar: 'https://i.pravatar.cc/150?u=maria',
   },
   {
+    id: 2,
     name: 'Facilita Backoffice',
     permissions: 'Criar propostas, Editar Propostas, Excluir Pro...',
     status: 'Revogado',
     last_use: '02/03/2024 17:30',
-    restriction: 'global',
+    restriction: '192.168.0.50',
     expires: 'Nunca Expira',
     created_by: 'Carlos Santos',
     avatar: 'https://i.pravatar.cc/150?u=carlos',

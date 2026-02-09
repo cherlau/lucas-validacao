@@ -16,22 +16,26 @@
 </template>
 
 <script setup>
+import { inject } from 'vue' // 2. Importe o inject
+
 const props = defineProps({
-  variant: {
-    type: String,
-    default: 'default', // 'default' | 'danger'
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
+  variant: { type: String, default: 'default' },
+  disabled: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['click'])
 
+// 3. Injete a função do pai. O null é o valor padrão caso o item seja usado fora de um dropdown.
+const closeDropdown = inject('closeDropdown', null)
+
 const handleClick = (event) => {
   if (!props.disabled) {
     emit('click', event)
+
+    // 4. Se a função existir, fecha o menu!
+    if (closeDropdown) {
+      closeDropdown()
+    }
   }
 }
 </script>

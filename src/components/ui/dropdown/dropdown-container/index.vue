@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, provide } from 'vue'
 
 const props = defineProps({
   align: {
@@ -78,6 +78,8 @@ const toggle = async () => {
 const close = () => {
   isOpen.value = false
 }
+
+provide('closeDropdown', close)
 
 // Lógica para fechar ao clicar fora
 const handleClickOutside = (event) => {
