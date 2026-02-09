@@ -7,7 +7,7 @@
             Tokens de API: <span class="highlight">{{ integrationDetails.name }}</span>
           </h1>
           <span class="meta-item-id">{{ integrationDetails.id }}</span>
-          <p class="subtitle">Encontramos {{ tokensData.length }} tokens cadastrados</p>
+          <p class="subtitle">Encontramos {{ filteredTokens.length }} tokens cadastrados</p>
         </div>
       </div>
       <button class="btn-primary" @click="isDrawerOpen = true">
@@ -18,12 +18,24 @@
     <div class="table-filters mt-4">
       <div class="table-filters">
         <label>Filtrar:</label>
-        <UiSelect v-model="filterOrigin" :data="originOptions" class="filter-select" />
-        <UiSelect v-model="filterStatus" :data="statusOptions" class="filter-select" />
+
+        <UiSelect
+          v-model="filterOrigin"
+          :data="originOptions"
+          return-value="value"
+          class="filter-select"
+        />
+
+        <UiSelect
+          v-model="filterStatus"
+          :data="statusOptions"
+          return-value="value"
+          class="filter-select"
+        />
       </div>
     </div>
 
-    <DataTable :columns="tokenColumns" :data="tokensData" class="mt-4" :show-checkbox="false">
+    <DataTable :columns="tokenColumns" :data="filteredTokens" class="mt-4" :show-checkbox="false">
       <template #cell-permissions="{ item }">
         <div class="permissions-cell">
           <span class="truncate">{{ item.permissions }}</span>
@@ -52,28 +64,67 @@
         </div>
       </template>
 
-      <template #cell-actions>
-        <button class="action-btn">
-          <i class="far fa-cog"></i>
-        </button>
+      <template #cell-actions="{ item }">
+        <UiDropdown align="right">
+          <template #trigger="{ isOpen }">
+            <button class="action-btn" :class="{ 'btn-active': isOpen }">
+              <i class="far fa-cog"></i>
+            </button>
+          </template>
+
+          <UiDropdownItem @click="handleAction('edit', item)">
+            <template #icon><i class="fas fa-pencil-alt" style="font-size: 14px"></i></template>
+            Editar
+          </UiDropdownItem>
+
+          <div style="border-top: 1px solid #f1f5f9; margin: 4px 0"></div>
+
+          <UiDropdownItem variant="danger" @click="handleAction('revoke', item)">
+            <template #icon><i class="far fa-ban" style="font-size: 14px"></i></template>
+            Revogar
+          </UiDropdownItem>
+        </UiDropdown>
       </template>
     </DataTable>
 
     <DrawerCreateToken v-model="isDrawerOpen" @confirm="handleSaveToken" />
+
+    <ModalTokenSuccess v-model="isSuccessModalOpen" :token="generatedToken" />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import DataTable from '@/components/ui/data-table'
 import DrawerCreateToken from '@/components/features/integration-erp/drawers/createTokenDrawer'
+import ModalTokenSuccess from '@/components/features/integration-erp/modals/modal-token-success'
+import UiDropdown from '@/components/ui/dropdown/dropdown-container'
+import UiDropdownItem from '@/components/ui/dropdown/dropdown-item'
+
+// Nota: Certifique-se de que UiDropdown e UiDropdownItem estão importados ou são globais
+// import { UiDropdown, UiDropdownItem } from '@/components/ui/dropdown'
 
 const isDrawerOpen = ref(false)
+const isSuccessModalOpen = ref(false)
+const generatedToken = ref('')
 
-const handleSaveToken = (formData) => {
-  console.log('Dados recebidos do Drawer:', formData)
-  // Aqui você chama sua API
+// Função para lidar com as ações do Dropdown
+const handleAction = (action, item) => {
+  if (action === 'edit') {
+    console.log('Editar item:', item)
+    // Lógica para abrir modal de edição
+  } else if (action === 'revoke') {
+    console.log('Revogar item:', item)
+    // Lógica para revogar/excluir
+  }
+}
+
+const handleSaveToken = async (formData) => {
+  console.log('Criando token...', formData)
+  const apiResponse = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.exemplo-de-token-gerado-pela-api-xyz'
   isDrawerOpen.value = false
+  generatedToken.value = apiResponse
+  isSuccessModalOpen.value = true
 }
 
 const props = defineProps({
@@ -83,6 +134,7 @@ const props = defineProps({
   },
 })
 
+// --- LÓGICA DE FILTROS ---
 const filterOrigin = ref('all')
 const filterStatus = ref('all')
 
@@ -130,6 +182,26 @@ const tokensData = ref([
     avatar: 'https://i.pravatar.cc/150?u=carlos',
   },
 ])
+
+const filteredTokens = computed(() => {
+  return tokensData.value.filter((item) => {
+    // 1. Filtro de Status
+    const statusValue = filterStatus.value
+    const matchesStatus = !statusValue || statusValue === 'all' ? true : item.status === statusValue
+
+    // 2. Filtro de Origem
+    let matchesOrigin = true
+    const originValue = filterOrigin.value
+
+    if (originValue && originValue !== 'all') {
+      if (originValue === 'crm') {
+        matchesOrigin = item.name.includes('CRM')
+      }
+    }
+
+    return matchesStatus && matchesOrigin
+  })
+})
 </script>
 
 <style lang="stylus" scoped>
@@ -366,10 +438,10 @@ h1 {
 .table-filters {
   display: flex;
   justify-content: space-between;
-	align-items: center;
+  align-items: center;
   margin-bottom: 16px;
-	gap: 12px;
-	width: 430px;
+  gap: 12px;
+  width: 430px;
 }
 
 .search-input {
@@ -423,8 +495,10 @@ h1 {
   background: none;
   color: #94a3b8;
   cursor: pointer;
+  transition: color 0.2s;
 }
-.action-btn:hover {
+.action-btn:hover,
+.action-btn.btn-active {
   color: #4f46e5;
 }
 
@@ -476,10 +550,10 @@ h1 {
 }
 
 .fa-info-circle {
-	color: #94a3b8;
-	margin-left: 4px;
-	font-size: 12px;
-	cursor: pointer;
+  color: #94a3b8;
+  margin-left: 4px;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 /* Valor monoespaçado (rotas, códigos) */
@@ -531,13 +605,13 @@ h1 {
 }
 
 .user-cell {
-	display: flex;
-	align-items: center;
-	gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .avatar-content {
-		width: 24px;
+    width: 24px;
     height 24px
     border-radius 50%
 }

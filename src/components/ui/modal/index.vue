@@ -14,10 +14,15 @@
             <i class="icon" :class="icon"></i>
           </div>
           <div class="modal-header-content">
-            <h2 v-if="title" class="modal-title">{{ title }}</h2>
-            <p v-if="subtitle" class="modal-subtitle">{{ subtitle }}</p>
+            <template v-if="$slots.header">
+              <slot name="header" />
+            </template>
+            <template v-else>
+              <h2 v-if="title" class="modal-title">{{ title }}</h2>
+              <p v-if="subtitle" class="modal-subtitle">{{ subtitle }}</p>
+            </template>
           </div>
-          <UiButton size="md" @click="close">
+          <UiButton size="md" class="btn-close" @click="close">
             <IconClose />
           </UiButton>
         </div>

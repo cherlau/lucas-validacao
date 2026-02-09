@@ -7,7 +7,7 @@
   >
     <div class="drawer-form-content">
       <section class="form-section">
-        <h3 class="section-step">2. Dados</h3>
+        <h3 class="section-step">1. Dados</h3>
 
         <UiInput v-model="form.name" label="Nome" placeholder="Ex: Facilita CRM" />
 
@@ -17,7 +17,7 @@
       <hr class="divider" />
 
       <section class="form-section">
-        <h3 class="section-step mt-4">1. Permissões.</h3>
+        <h3 class="section-step mt-4">2. Permissões.</h3>
         <p class="section-desc">Selecione quais ações este token poderá realizar.</p>
 
         <div class="permissions-list">
