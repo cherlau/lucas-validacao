@@ -74,9 +74,8 @@
           </UiSelect>
         </div>
         <div class="chart-placeholder">
-          [Gráfico de Linhas seria renderizado aqui]
+          [ Gráfico ]
           <br />
-          <small>Sugerimos usar a lib <b>vue-chartjs</b></small>
         </div>
       </div>
 
