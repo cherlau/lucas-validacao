@@ -8,18 +8,15 @@
     <div class="drawer-form-content">
       <section class="form-section">
         <h3 class="section-step">2. Dados</h3>
-        <div class="form-group">
-          <label>Nome</label>
-          <input v-model="form.name" type="text" placeholder="Ex: Facilita CRM" class="ui-input" />
-        </div>
-        <div class="form-group">
-          <label>Expira em</label>
-          <UiSelect v-model="form.expires" :data="expiryOptions" />
-        </div>
+
+        <UiInput v-model="form.name" label="Nome" placeholder="Ex: Facilita CRM" />
+
+        <UiSelect v-model="form.expires" label="Expira em" :data="expiryOptions" />
       </section>
 
+      <hr class="divider" />
+
       <section class="form-section">
-        <hr class="divider" />
         <h3 class="section-step mt-4">1. Permissões.</h3>
         <p class="section-desc">Selecione quais ações este token poderá realizar.</p>
 
@@ -64,21 +61,22 @@
         </div>
       </section>
 
+      <hr class="divider" />
+
       <section class="form-section">
-        <hr class="divider" />
         <h3 class="section-step mt-4">3. Restrição de IP</h3>
         <p class="section-desc">
           O Token só funcionará para requisições vindas dos IPs listados abaixo. Deixe em branco
           para permitir qualquer IP.
         </p>
-        <div class="form-group">
-          <label>Endereços permitidos</label>
-          <textarea
-            v-model="form.ipRestriction"
-            placeholder="192.168.0.1"
-            class="ui-textarea"
-          ></textarea>
-        </div>
+
+        <UiInput
+          v-model="form.ipRestriction"
+          label="Endereços permitidos"
+          placeholder="192.168.0.1"
+          type="textarea"
+          rows="3"
+        />
       </section>
     </div>
 
@@ -94,6 +92,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import UiDrawer from '@/components/ui/drawer'
+import UiInput from '@/components/ui/input'
 // Importe seu UiSelect aqui se necessário
 
 const props = defineProps({
@@ -150,16 +149,16 @@ const submit = () => {
 <style lang="stylus" scoped>
 /* --- Layout Geral do Drawer --- */
 .drawer-form-content
-  padding: 24px 32px
+  padding: 24px 0
   display: flex
   flex-direction: column
-  /* Removido o gap grande geral para controlar via margin-top nos titulos */
 
 .form-section
   display: flex
   flex-direction: column
   gap: 16px
   margin-bottom: 24px
+  padding-inline: 43px
 
 .section-step
   font-size: 16px
@@ -179,44 +178,12 @@ const submit = () => {
 .divider
   border: none
   border-top: 1px solid #e2e8f0
-  margin: 0
+  margin: 15px 0
   width: 100%
 
-/* --- Inputs e Labels --- */
-.form-group
-  display: flex
-  flex-direction: column
-  gap: 8px
-
-  label
-    font-size: 14px
-    font-weight: 600
-    color: #0f172a
-
-.ui-input
-  height: 40px
-  padding: 0 12px
-  border: 1px solid #cbd5e1
-  border-radius: 6px
-  font-size: 14px
-  color: #334155
-  &:focus
-    outline: none
-    border-color: #5e5cf0
-    box-shadow: 0 0 0 2px rgba(94, 92, 240, 0.1)
-
-.ui-textarea
-  padding: 12px
-  border: 1px solid #e2e8f0
-  border-radius: 6px
-  font-size: 14px
-  min-height: 80px
-  background-color: #f8fafc /* Azul bem clarinho */
-  color: #64748b
-  resize: none
-  &:focus
-    outline: none
-    border-color: #5e5cf0
+/* REMOVIDO: .form-group, .ui-input, .ui-textarea
+   Pois agora o UiInput cuida disso
+*/
 
 /* --- Lista de Permissões --- */
 .permissions-list
@@ -257,7 +224,7 @@ const submit = () => {
       flex-direction: column
       gap: 20px
 
-/* --- Checkbox Customizado (O Segredo do Layout) --- */
+/* --- Checkbox Customizado (Mantido para preservar o visual da lista) --- */
 .checkbox-container
   display: flex
   align-items: center
@@ -321,7 +288,7 @@ const submit = () => {
   gap: 12px
 
 .checkbox-wrapper
-  padding-top: 2px /* Alinha checkbox com a primeira linha de texto */
+  padding-top: 2px
 
 .text-content
   display: flex
