@@ -1,17 +1,15 @@
 <template>
-  <div class="accordion">
-    <!-- Cabeçalho -->
+  <div class="accordion" :class="{ open: isOpen }">
     <button class="accordion-header" @click="isOpen = !isOpen">
       <span>{{ title }}</span>
       <IconChevron class="chevron" :class="{ open: isOpen }" />
     </button>
 
-    <!-- Conteúdo -->
     <div v-if="isOpen" class="accordion-content">
       <pre>{{ formattedCode }}</pre>
-      <UiButton variant="transparent" class="copy-btn" @click="copyToClipboard"
-        ><IconCopy
-      /></UiButton>
+      <UiButton variant="transparent" class="copy-btn" @click="copyToClipboard">
+        <IconCopy />
+      </UiButton>
     </div>
   </div>
 </template>

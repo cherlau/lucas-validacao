@@ -1,105 +1,3 @@
-<script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import DataTable from '@/components/ui/data-table'
-
-const route = useRoute()
-const integrationId = route.params.id // Pega o ID da URL (ex: ERP-TRV-UAU-001)
-
-// --- ESTADOS PARA OS SELECTS ---
-const selectedPeriod = ref('24h')
-const selectedOrigin = ref('all')
-const selectedStatus = ref('all')
-
-// --- OPÇÕES PARA OS SELECTS ---
-const periodOptions = [
-  { label: 'Últimas 24 horas', value: '24h' },
-  { label: 'Últimos 7 dias', value: '7d' },
-  { label: 'Últimos 30 dias', value: '30d' },
-]
-
-const originOptions = [
-  { label: 'Todas as origens', value: 'all' },
-  { label: 'Facilita CRM', value: 'crm' },
-  { label: 'Facilita Backoffice', value: 'backoffice' },
-]
-
-const statusOptions = [
-  { label: 'Todos os Status', value: 'all' },
-  { label: 'Sucesso', value: 'Sucesso' },
-  { label: 'Erro', value: 'Erro' },
-]
-
-// --- MOCK DE DADOS PARA A PÁGINA ---
-const integrationDetails = ref({
-  name: 'Teriva ➝ Sienge',
-  id: 'ERP-TRV-SNG-001',
-  status: 'Operacional',
-  created_at: '27-01-2025 14:35',
-  kpi: {
-    total: 1250,
-    success: 1200,
-    success_pct: 96,
-    error: 50,
-    error_pct: 4,
-  },
-})
-
-// --- CONFIGURAÇÃO DA TABELA DE HISTÓRICO (Baseado na imagem) ---
-const historyColumns = [
-  { key: 'req_id', label: 'ID da Requisição', width: '150px' },
-  { key: 'origin', label: 'Origem' },
-  { key: 'type', label: 'TIPO', width: '80px' },
-  { key: 'operation', label: 'Operação' },
-  { key: 'last_activity', label: 'Última atividade' },
-  { key: 'status', label: 'Status', align: 'center' },
-  { key: 'code', label: 'Código', width: '80px' },
-  { key: 'response_time', label: 'Resposta' },
-  { key: 'actions', label: '', width: '50px', align: 'center' },
-]
-
-const historyData = [
-  {
-    id: 1,
-    req_id: 'REQ-2024-005821',
-    origin: 'Facilita CRM',
-    type: 'POST',
-    operation: '/sienge/v1/propostas',
-    last_activity: '28/05/2024 11:00',
-    status: 'Sucesso',
-    code: 201,
-    response_time: '245ms',
-  },
-  {
-    id: 2,
-    req_id: 'REQ-2024-005820',
-    origin: 'Facilita Backoffice',
-    type: 'POST',
-    operation: '/sienge/v1/comissoes',
-    last_activity: '27/05/2024 17:45',
-    status: 'Erro',
-    code: 401,
-    response_time: '245ms',
-  },
-  {
-    id: 3,
-    req_id: 'REQ-2024-005819',
-    origin: 'Facilita Produtos',
-    type: 'GET',
-    operation: '/sienge/v1/empreendimentos',
-    last_activity: '26/05/2024 08:15',
-    status: 'Sucesso',
-    code: 201,
-    response_time: '245ms',
-  },
-]
-
-// Helper para cor do badge (reutilizando lógica similar)
-const getStatusClass = (status) => {
-  return status === 'Sucesso' ? 'badge-success' : 'badge-danger'
-}
-</script>
-
 <template>
   <div class="page-container">
     <UiPageHeader
@@ -112,7 +10,7 @@ const getStatusClass = (status) => {
       @update:active-tab="currentTab = $event"
     />
 
-    <div class="content-area">
+    <div class="content-area page-body">
       <div class="page-title-row">
         <div class="title-wrapper">
           <div class="content-title">
@@ -202,16 +100,216 @@ const getStatusClass = (status) => {
             </span>
           </template>
 
-          <template #cell-actions>
-            <button class="action-btn">
+          <template #cell-actions="{ item }">
+            <button type="button" class="action-btn" @click="openDrawer(item)">
               <i class="far fa-eye"></i>
             </button>
           </template>
         </DataTable>
       </div>
     </div>
+
+    <UiDrawer
+      v-model="isDrawerOpen"
+      title="Detalhes da Requisição"
+      subtitle="Informações da requisição selecionada"
+    >
+      <div class="drawer-content">
+        <!-- BLOCO DE METADADOS -->
+        <div class="request-meta">
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value badge badge-success"> <span class="dot"></span> Sucesso </span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Data e Hora</span>
+            <span class="meta-value">10 de Setembro de 2025</span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Origem</span>
+            <span class="meta-value">Facilita BackOffice</span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Operação</span>
+            <span class="meta-value mono">POST /sienge/v1/propostas</span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Tempo de Resposta</span>
+            <span class="meta-value">245ms</span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Código HTTP</span>
+            <span class="meta-value">201</span>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="meta-body">
+          <!-- INFORMAÇÕES AVANÇADAS -->
+          <h4 class="section-title">Informações Avançadas</h4>
+
+          <div class="advanced-section">
+            <CodeAccordion
+              title="1. Requisição Recebida"
+              :code="{
+                cliente_id: '12345',
+                empreendimento_id: '67890',
+                valor: 450000.0,
+                data_proposta: '2025-01-27',
+              }"
+            />
+
+            <CodeAccordion
+              title="2. Cabeçalho HTTP"
+              :code="{
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+                'Content-Type': 'application/json',
+                'X-Facilita-Client-ID': 'ERP-TER-SIEN-001',
+                'User-Agent': 'FacilitaCRM',
+                'X-instance': 'teriva',
+              }"
+            />
+
+            <CodeAccordion
+              title="3. Resposta do ERP"
+              :code="{
+                status: 'success',
+                id: 'ERP-RESP-99821',
+              }"
+            />
+
+            <CodeAccordion
+              title="4. Enviado para a Aplicação"
+              :code="{
+                synced: true,
+                sent_at: '2025-09-10T10:32:11Z',
+              }"
+            />
+          </div>
+        </div>
+      </div>
+    </UiDrawer>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import DataTable from '@/components/ui/data-table'
+import UiDrawer from '@/components/ui/drawer'
+import CodeAccordion from '@/components/ui/code-accordion'
+
+const route = useRoute()
+const integrationId = route.params.id // Pega o ID da URL (ex: ERP-TRV-UAU-001)
+
+// --- ESTADOS PARA OS SELECTS ---
+const selectedPeriod = ref('24h')
+const selectedOrigin = ref('all')
+const selectedStatus = ref('all')
+const currentTab = ref('monitoramento')
+
+const isDrawerOpen = ref(false)
+const selectedRequest = ref(null)
+
+const openDrawer = (item) => {
+  selectedRequest.value = item
+  isDrawerOpen.value = true
+}
+
+// --- OPÇÕES PARA OS SELECTS ---
+const periodOptions = [
+  { label: 'Últimas 24 horas', value: '24h' },
+  { label: 'Últimos 7 dias', value: '7d' },
+  { label: 'Últimos 30 dias', value: '30d' },
+]
+
+const originOptions = [
+  { label: 'Todas as origens', value: 'all' },
+  { label: 'Facilita CRM', value: 'crm' },
+  { label: 'Facilita Backoffice', value: 'backoffice' },
+]
+
+const statusOptions = [
+  { label: 'Todos os Status', value: 'all' },
+  { label: 'Sucesso', value: 'Sucesso' },
+  { label: 'Erro', value: 'Erro' },
+]
+
+// --- MOCK DE DADOS PARA A PÁGINA ---
+const integrationDetails = ref({
+  name: 'Teriva ➝ UAU',
+  id: 'ERP-TRV-SNG-001',
+  status: 'Operacional',
+  created_at: '27-01-2025 14:35',
+  kpi: {
+    total: 1250,
+    success: 1200,
+    success_pct: 96,
+    error: 50,
+    error_pct: 4,
+  },
+})
+
+// --- CONFIGURAÇÃO DA TABELA DE HISTÓRICO (Baseado na imagem) ---
+const historyColumns = [
+  { key: 'req_id', label: 'ID da Requisição', width: '150px' },
+  { key: 'origin', label: 'Origem' },
+  { key: 'type', label: 'TIPO', width: '80px' },
+  { key: 'operation', label: 'Operação' },
+  { key: 'last_activity', label: 'Última atividade' },
+  { key: 'status', label: 'Status', align: 'center' },
+  { key: 'code', label: 'Código', width: '80px' },
+  { key: 'response_time', label: 'Resposta' },
+  { key: 'actions', label: '', width: '50px', align: 'center' },
+]
+
+const historyData = [
+  {
+    id: 1,
+    req_id: 'REQ-2024-005821',
+    origin: 'Facilita CRM',
+    type: 'POST',
+    operation: '/sienge/v1/propostas',
+    last_activity: '28/05/2024 11:00',
+    status: 'Sucesso',
+    code: 201,
+    response_time: '245ms',
+  },
+  {
+    id: 2,
+    req_id: 'REQ-2024-005820',
+    origin: 'Facilita Backoffice',
+    type: 'POST',
+    operation: '/sienge/v1/comissoes',
+    last_activity: '27/05/2024 17:45',
+    status: 'Erro',
+    code: 401,
+    response_time: '245ms',
+  },
+  {
+    id: 3,
+    req_id: 'REQ-2024-005819',
+    origin: 'Facilita Produtos',
+    type: 'GET',
+    operation: '/sienge/v1/empreendimentos',
+    last_activity: '26/05/2024 08:15',
+    status: 'Sucesso',
+    code: 201,
+    response_time: '245ms',
+  },
+]
+
+// Helper para cor do badge (reutilizando lógica similar)
+const getStatusClass = (status) => {
+  return status === 'Sucesso' ? 'badge-success' : 'badge-danger'
+}
+</script>
 
 <style scoped>
 /* Layout Geral */
@@ -222,12 +320,6 @@ const getStatusClass = (status) => {
 .page-container {
   background-color: #fff;
   min-height: 100vh;
-}
-
-.content-area {
-  padding: 32px;
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 /* Header & Tabs */
@@ -259,6 +351,10 @@ const getStatusClass = (status) => {
   color: #4f46e5;
   border-bottom-color: #4f46e5;
   font-weight: 500;
+}
+
+.page-body {
+  padding-block: 32px;
 }
 
 /* Título e Meta */
@@ -507,4 +603,103 @@ h1 {
 .action-btn:hover {
   color: #4f46e5;
 }
+
+/* Drawer Content */
+
+/* Container geral */
+.drawer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===============================
+   Metadados (Status, Data, Origem)
+   =============================== */
+
+.request-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 32px;
+  padding: 0 43px;
+}
+
+.meta-body {
+  padding: 0 43px;
+}
+
+.meta-body .section-title {
+  margin-bottom: 28px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: start;
+}
+
+.meta-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.meta-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+/* Valor monoespaçado (rotas, códigos) */
+.meta-value.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ===============================
+   Status badge
+   =============================== */
+
+.meta-value.badge-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #16a34a;
+}
+
+.meta-value.badge-success .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #16a34a;
+}
+
+/* ===============================
+   Divisor
+   =============================== */
+
+.divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ===============================
+   Informações Avançadas
+   =============================== */
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.advanced-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===============================
+   Responsividade
+   =============================== */
 </style>

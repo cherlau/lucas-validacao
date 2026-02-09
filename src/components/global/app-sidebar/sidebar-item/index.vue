@@ -1,6 +1,11 @@
 <template>
   <div class="sidebar-item" :class="{ active: isActive }" @click="emit('click')">
-    <component :is="iconComponent" v-if="iconComponent" class="icon" />
+    <component
+      :is="iconComponent"
+      v-if="iconComponent"
+      class="icon"
+      :fill="isActive ? '#fff' : '#696d81'"
+    />
 
     <span class="tooltip">{{ item.name }}</span>
   </div>
